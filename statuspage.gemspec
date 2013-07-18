@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Statuspage::VERSION
   spec.authors       = ["Richard King"]
   spec.email         = ["rkingucla@ymail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{ruby wrapper for statuspage.io api}
+  spec.summary       = %q{ruby wrapper for statuspage.io api}
+  spec.homepage      = "https://github.com/richardking/statuspagerb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

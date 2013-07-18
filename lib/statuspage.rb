@@ -70,12 +70,14 @@ class StatusPage
       results = httparty_send :get, "#{@base_url}#{@page}/incidents.json"
       incidents = results.reject {|i| ['resolved', 'postmortem', 'completed'].include? i['status']}
       if incidents.empty?
-        puts "All clear, no unresolved incidents!"
+        puts "No unresolved incidents"
+        return []
       else
         puts "Unresolved incidents:"
         incidents.each do |i|
           puts "#{i['name']} - status: #{i['status']}, created at #{i['created_at']}"
         end
+        return incidents
       end
     elsif args[0] == 'open'
       valid_incident_status?(args[2])

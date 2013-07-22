@@ -7,7 +7,7 @@ class StatusPage
   INCIDENT_STATUSES = ["investigating", "identified", "monitoring", "resolved"]
 
   def initialize(args=nil)
-    @config = File.expand_path("~/statuspage.yml")
+    @config = File.expand_path("~/.statuspage.yml")
     @components = {}
     load_config
     load_components
@@ -19,10 +19,11 @@ class StatusPage
     @oauth = config['oauth']
     @base_url = config['base_url']
     @page = config['page']
+    @account_url = @base_url + @page
   end
 
   def load_components
-    httparty_send(:get, "#{@base_url}#{@page}/components.json").each {|c| @components[c['name'].downcase] = c['id'] }
+    get_components_json.each {|c| @components[c['name'].downcase] = c['id'] }
   end
 
   def start(args=[])
@@ -40,14 +41,12 @@ class StatusPage
   def components(*args)
     component_name_valid?(args[0]) unless args.empty?
     if args.empty?
-      results = httparty_send :get, "#{@base_url}#{@page}/components.json"
-      puts results
-      results
-    elsif args.size == 1
+      puts get_components_json.to_yaml
+    elsif args.one?
       component_name = @components.keys.grep(/#{args[0].downcase}/).first
       component_id = @components["#{component_name}"]
 
-      results = httparty_send :get, "#{@base_url}#{@page}/components.json"
+      results = httparty_send :get, "#{@account_url}/components.json"
       component = results.select{|c| c['id'] == component_id}.first
       puts "Status of #{component['name']}: #{component['status'].gsub('_',' ')}"
     else 
@@ -55,7 +54,7 @@ class StatusPage
       component_name = @components.keys.grep(/#{args[0].downcase}/).first
       component_id = @components["#{component_name}"]
       component_new_status = COMPONENT_STATUSES.grep(/#{args[1].downcase}/).first
-      url = "#{@base_url}#{@page}/components/#{component_id}.json"
+      url = "#{@account_url}/components/#{component_id}.json"
 
       results = httparty_send :patch, url, :body => {"component[status]" => component_new_status.gsub(' ', '_')}
       puts "Status for #{component_name} is now #{results['status'].gsub('_',' ')}"
@@ -63,40 +62,41 @@ class StatusPage
   end
 
   # incidents - show json of all incidents
-  # incidents open <incident_name> <incident_status> <incident_message> - create new incident
+  # incidents open <incident_status> <incident_message> <incident_name> - create new incident
   # incidents update <incident_status> <incident_message> - update last open incident with new status/message
   def incidents(*args)
+    unresolved_incidents = get_incidents_json.reject {|i| ['resolved', 'postmortem', 'completed'].include? i['status']}
     if args.empty?
-      results = httparty_send :get, "#{@base_url}#{@page}/incidents.json"
-      incidents = results.reject {|i| ['resolved', 'postmortem', 'completed'].include? i['status']}
-      if incidents.empty?
+      if unresolved_incidents.empty?
         puts "No unresolved incidents"
-        return []
       else
         puts "Unresolved incidents:"
-        incidents.each do |i|
+        unresolved_incidents.each do |i|
           puts "#{i['name']} - status: #{i['status']}, created at #{i['created_at']}"
         end
-        return incidents
       end
     elsif args[0] == 'open'
-      valid_incident_status?(args[2])
-      options = { :body => { "incident[name]" => args[1], "incident[status]" => args[2],  "incident[message]" => args[3] } }
-      results = httparty_send :post, "#{@base_url}#{@page}/incidents.json", options
-      puts results
+      options = { :body => { "incident[name]" => args[3], "incident[status]" => args[1],  "incident[message]" => args[2] } }
+      results = httparty_send :post, "#{@account_url}/incidents.json", options
+      puts "Created new incident: #{results['name']}"
     elsif args[0] == 'update'
-      latest_incident = incidents.reject {|i| ['resolved', 'postmortem', 'completed'].include? i['status']}.first
+      latest_incident = unresolved_incidents.first
       if latest_incident.nil?
         puts "No open incidents"
       else
-        valid_incident_status?(args[1])
         options = { :body => { "incident[status]" => args[1],  "incident[message]" => args[2] } }
-        results = httparty_send :patch, "#{@base_url}#{@page}/incidents/#{latest_incident['id']}.json", options
-        puts results
+        response = httparty_send :patch, "#{@account_url}/incidents/#{latest_incident['id']}.json", options
+        puts "Updated incident '#{response['name']}' status to #{response['status']}"
       end
     else
       puts "Invalid command"
     end
+  end
+
+  def update_incident_by_id(status, message, id)
+    options = { :body => { "incident[status]" => status, "incident[message]" => message } }
+    results = httparty_send :patch, "#{@account_url}/incidents/#{id}.json", options
+    results
   end
 
   private
@@ -107,6 +107,14 @@ class StatusPage
       exit
     end
     true
+  end
+
+  def get_components_json
+    httparty_send(:get, "#{@account_url}/components.json")
+  end
+
+  def get_incidents_json
+    httparty_send(:get, "#{@account_url}/incidents.json")
   end
 
   def valid_component_status?(status)

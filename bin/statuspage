@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require File.expand_path("../../lib/statuspage", __FILE__)
-
-StatusPage.new(ARGV)

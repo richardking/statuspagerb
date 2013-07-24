@@ -1,0 +1,87 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.statuspage.io/v1/pages/p9qz8c9gtcnh/components.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      ! 'Authorization: oauth':
+      - adeac0389fd4fb8a1519c2590f36263708e9574c6d5560f7e6808acfe1261ffe
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - must-revalidate, private, max-age=0
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 22 Jul 2013 23:33:25 GMT
+      Etag:
+      - ! '"e37a6a3526e8810c81f542bc1f183a7a"'
+      Status:
+      - 200 OK
+      X-Rack-Cache:
+      - miss
+      X-Request-Id:
+      - 6c334f5e8fa8bd655dc39613b0fd2287
+      X-Runtime:
+      - '0.032706'
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Content-Length:
+      - '1081'
+      Connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '[{"created_at":"2013-07-16T05:39:11Z","name":"Writer Tools","position":1,"status":"degraded_performance","updated_at":"2013-07-18T21:14:38Z","id":"9q0tsgpl4hzv","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:45:39Z","name":"Programming","position":2,"status":"degraded_performance","updated_at":"2013-07-17T00:50:41Z","id":"x09l03q6lkq7","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:39:26Z","name":"Page
+        CMS","position":3,"status":"operational","updated_at":"2013-07-16T18:08:18Z","id":"1xjs2dmqh7nq","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:39:45Z","name":"Notifications","position":4,"status":"operational","updated_at":"2013-07-16T05:46:17Z","id":"rlrry9fq60kp","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:46:41Z","name":"Platform","position":5,"status":"degraded_performance","updated_at":"2013-07-19T18:20:34Z","id":"8y0xnrlftfgf","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T18:49:27Z","name":"User-facing","position":6,"status":"operational","updated_at":"2013-07-16T18:49:27Z","id":"5q1m346drn1d","page_id":"p9qz8c9gtcnh"}]'
+    http_version: 
+  recorded_at: Mon, 22 Jul 2013 23:33:25 GMT
+- request:
+    method: get
+    uri: https://api.statuspage.io/v1/pages/p9qz8c9gtcnh/components.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      ! 'Authorization: oauth':
+      - adeac0389fd4fb8a1519c2590f36263708e9574c6d5560f7e6808acfe1261ffe
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - must-revalidate, private, max-age=0
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 22 Jul 2013 23:33:25 GMT
+      Etag:
+      - ! '"e37a6a3526e8810c81f542bc1f183a7a"'
+      Status:
+      - 200 OK
+      X-Rack-Cache:
+      - miss
+      X-Request-Id:
+      - 267f9bd97b9a60f373cf8dc720030da7
+      X-Runtime:
+      - '0.032559'
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Content-Length:
+      - '1081'
+      Connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '[{"created_at":"2013-07-16T05:39:11Z","name":"Writer Tools","position":1,"status":"degraded_performance","updated_at":"2013-07-18T21:14:38Z","id":"9q0tsgpl4hzv","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:45:39Z","name":"Programming","position":2,"status":"degraded_performance","updated_at":"2013-07-17T00:50:41Z","id":"x09l03q6lkq7","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:39:26Z","name":"Page
+        CMS","position":3,"status":"operational","updated_at":"2013-07-16T18:08:18Z","id":"1xjs2dmqh7nq","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:39:45Z","name":"Notifications","position":4,"status":"operational","updated_at":"2013-07-16T05:46:17Z","id":"rlrry9fq60kp","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T05:46:41Z","name":"Platform","position":5,"status":"degraded_performance","updated_at":"2013-07-19T18:20:34Z","id":"8y0xnrlftfgf","page_id":"p9qz8c9gtcnh"},{"created_at":"2013-07-16T18:49:27Z","name":"User-facing","position":6,"status":"operational","updated_at":"2013-07-16T18:49:27Z","id":"5q1m346drn1d","page_id":"p9qz8c9gtcnh"}]'
+    http_version: 
+  recorded_at: Mon, 22 Jul 2013 23:33:25 GMT
+recorded_with: VCR 2.5.0

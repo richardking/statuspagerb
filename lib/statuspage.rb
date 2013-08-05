@@ -32,7 +32,7 @@ class StatusPage
   end
 
   def show_component_by_id(id)
-    get_components_json.select{|c| c['id'] == id }
+    get_components_json.select{|c| c['id'] == id }.first
   end
 
   def update_component_by_id(id, status)

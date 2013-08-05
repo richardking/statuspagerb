@@ -37,23 +37,30 @@ class StatusPageCLI
   # components - show status of all components
   # components <component_name> - show status of specific component
   # components <component_name> <status> - set the status for a component
-  def components(*arg)
+  def components(*args)
     if args.empty?
-      @status_page.show_all_components
+      components = @status_page.show_all_components
+      components.each do |c|
+        puts c['name']
+      end
     elsif args.one?
       component_name = @status_page.components_hash.keys.grep(/#{args[0].downcase}/).first
       component_id = @status_page.components_hash["#{component_name}"]
 
-      component = @status_page.get_components_json.select{|c| c['id'] == component_id}.first
-      puts "Status of #{component['name']}: #{component['status'].gsub('_',' ')}"
+      response = @status_page.show_component_by_id(component_id)
+      puts "Status of #{response['name']}: #{response['status'].gsub('_',' ')}"
     else 
       valid_component_status?(args[1].downcase)
-      component_name = @components_hash.keys.grep(/#{args[0].downcase}/).first
-      component_id = @components_hash["#{component_name}"]
-      component_new_status = COMPONENT_STATUSES.grep(/#{args[1].downcase}/).first
-
-      response = @status_page.update_component_by_id(component_id, component_new_status)
-      puts "Status for #{component_name} is now #{response['status'].gsub('_',' ')}"
+      component_names = @status_page.components_hash.keys.grep(/#{args[0].downcase}/)
+      if component_names.size == 0
+        raise "Cannot find component matching '#{args[0]}'"
+      elsif component_names.size == 1
+        component_new_status = COMPONENT_STATUSES.grep(/#{args[1].downcase}/).first.gsub(' ', '_')
+        response = @status_page.update_component_by_id(@status_page.components_hash[component_names.first], component_new_status)
+        puts "Status for #{component_names.first} is now #{response['status'].gsub('_',' ')}"
+      else
+        raise "Multiple components matching '#{name}'"
+      end
     end
   end
 

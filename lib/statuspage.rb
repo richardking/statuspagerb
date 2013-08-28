@@ -14,13 +14,13 @@ class StatusPage
     load_components
     load_incidents
   end
-  
+
   def load_config
     config = YAML.load(File.open @config)
     @oauth = config['oauth']
     @base_url = config['base_url']
     @page = config['page']
-    @account_url = @base_url + @page
+    @account_url = @base_url + "pages/" + @page
   end
 
   def show_all_components
